@@ -239,6 +239,7 @@ pygame.time.wait(3000)
 pygame.quit()
 
 
+
 ## 2D infinite scrolling Background
 Step 1: Set Up Your Scene
 Create a new 2D project in Unity.
@@ -279,6 +280,7 @@ Step 5: Test and Adjust
 Press Play and see the background scroll.
 Adjust the scrollSpeed to your liking.
 Add more background sprites if needed for smoother looping.
+
 
 
 ## Camera shake effect
@@ -324,6 +326,8 @@ private void StopShake()
 }
 The final output will result in the Camera Shake Effect on pressing the key ‘S’
 
+
+
 ## Snowfall particle effect
 1. Create a New Particle System:
 • In the Unity Editor, select the GameObject where you want to add the
@@ -365,3 +369,125 @@ the snowflakes.
 
 5. Play the Scene:
 • Press the Play button in Unity to see your snowfall effect in action.
+
+
+
+## Setup DirectX 11, Window Framework and Initialize Direct3D Device, Loading 
+   models into DirectX 11 and rendering
+Step 1: Create new project, and select “Windows Forms Application”, select .NET Framework as 2.0 in
+Visuals C#.
+Step 2: Right Click on properties Click on open click on build Select Platform Target and Select x86.
+Step 3: Click on View Code of Form 1.
+Step 4: Go to Solution Explorer, right click on project name, and select Add Reference. Click on Browse
+and select the given .dll files which are “Microsoft.DirectX”, “Microsoft.DirectX.Direct3D”, and
+“Microsoft.DirectX.DirectX3DX”.
+Step 5: Go to Properties Section of Form, select Paint in the Event List and enter as Form1_Paint.
+Step 6: Edit the Form’s C# code file.
+Step 7: When you run this code you get exception for LoaderLock. To solve this exception, go in
+exception thrown window, open exception setting, select and expand managed debugging assistant,
+and uncheck the loader lock option, then run your program.
+
+##C:windows:.net:DirectX Managed Code
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
+namespace WindowsFormsApplication5
+{
+public partial class Form1 : Form
+
+{
+Microsoft.DirectX.Direct3D.Device device;
+public Form1()
+{
+InitializeComponent();
+InitDevice();
+}
+private void InitDevice()
+{
+PresentParameters pp = new PresentParameters(); //CREATE OBJECT
+pp.Windowed = true;
+pp.SwapEffect = SwapEffect.Discard;
+device = new Device(0, DeviceType.Hardware, this, CreateFlags.HardwareVertexProcessing, pp);
+}
+private void Render()
+{
+device.Clear(ClearFlags.Target, Color.Blue,0,1);
+device.Present();
+}
+private void Form1_Paint_1(object sender, PaintEventArgs e)
+{
+Render();
+}
+}
+}
+
+##Loading models (image and fonts) into DirectX 11 and rendering.
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
+namespace WindowsFormsApplication10
+{
+public partial class Form1 : Form
+{
+Microsoft.DirectX.Direct3D.Device device;
+Microsoft.DirectX.Direct3D.Texture texture;
+Microsoft.DirectX.Direct3D.Font font;
+public Form1()
+{
+InitializeComponent();
+InitDevice();
+InitFont();
+LoadTexture();
+}
+private void InitFont()
+{
+System.Drawing.Font f = new System.Drawing.Font("Arial", 16f, FontStyle.Regular); font =
+new Microsoft.DirectX.Direct3D.Font(device, f);
+}
+private void LoadTexture()
+{
+texture = TextureLoader.FromFile(device, "C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg", 400, 400,
+1, 0, Format.A8B8G8R8, Pool.Managed, Filter.Point, Filter.Point, Color.Transparent.ToArgb()); }
+private void InitDevice()
+{
+PresentParameters pp = new PresentParameters();
+pp.Windowed = true;
+pp.SwapEffect = SwapEffect.Discard;
+device = new Device(0, DeviceType.Hardware, this, CreateFlags.HardwareVertexProcessing, pp);
+}
+private void Render()
+{
+device.Clear(ClearFlags.Target, Color.CornflowerBlue, 0, 1);
+device.BeginScene();
+using (Sprite s = new Sprite(device))
+{
+s.Begin(SpriteFlags.AlphaBlend);
+s.Draw2D(texture, new Rectangle(0, 0, 0, 0), new Rectangle(0, 0, device.Viewport.Width,
+device.Viewport.Height), new Point(0, 0), 0f, new Point(0, 0), Color.White);
+font.DrawText(s, "Desert", new Point(0, 0), Color.White);
+s.End();
+}
+device.EndScene();
+device.Present()
+}
+private void Form1_Paint(object sender, PaintEventArgs e)
+{
+Render();
+}
+private void Form1_Load(object sender, EventArgs e)
+{
+}
+}
+
