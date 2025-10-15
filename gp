@@ -246,12 +246,10 @@ Create a new 2D project in Unity.
 Import your background image(s) into the project.
 Create a GameObject (e.g., an empty object named BackgroundHolder).
 Add your background sprite(s) as child GameObjects of BackgroundHolder.
-
 Step 2: Prepare the Background Sprites
 Select each background sprite in the scene.
 Make sure their Pivot is set correctly (usually center or left aligned).
 Note the width of the background sprite in world units
-
 Step 3: Create a Scrolling Script
 using UnityEngine;
 public class InfiniteScroll : MonoBehaviour
@@ -270,16 +268,26 @@ public class InfiniteScroll : MonoBehaviour
         transform.position = startPosition + Vector3.left * newPosition;
     }
 }
-
 Step 4: Duplicate Background Sprites
 To ensure the infinite effect, you need at least two background sprites placed side by side:
 For example, if one sprite is 10 units wide, place one at (0,0) and the second at (10,0).
 The script scrolls the whole BackgroundHolder, and when the offset reaches the width, it loops back.
-
 Step 5: Test and Adjust
 Press Play and see the background scroll.
 Adjust the scrollSpeed to your liking.
 Add more background sprites if needed for smoother looping.
+
+#code
+#select 2d game and import an image in it
+#select img and from inspector select "Texture Type" as "Texture" and "Wrap Mode" as "repeat" and click apply
+#go to GameObject from upper panel and 3d object>Quad and scale it from inspector as "X=20" and "Y=10"
+#go to GameObject> Light> Directional Light
+#select the img and drag & drop in the quad and adjust light intensity
+#select img and in inspector click "add component"> new script> name it> create
+#below "public class scroll.." write "public float speed = 0.5f;"
+#below last line "void update()" write "Vector2 offset = new Vector2 (Time.time * speed, 0);"
+#below that write "renderer.material.mainTexturreOffset = offset;"
+#click run from above
 
 
 
@@ -335,7 +343,6 @@ snowfall effect.
 • Go to the menu bar and select GameObject > Effects > Particle System.
 This will create a new Particle System component attached to the selected
 GameObject.
-
 2. Configure the Particle System:
 • In the Inspector window, you'll see the Particle System component's settings.
 Adjust these settings to create a snowfall effect:
@@ -355,20 +362,26 @@ per second.
 the area where snowflakes will spawn.
 • Gravity Modifier: Apply a downward force (negative value) to simulate
 gravity. Use a small negative value, like -0.1, to make snowflakes fall gently.
-
 3. Texture for Snowflakes:
 • You can use a custom texture for your snowflakes. In the Particle System
 settings, under the Renderer module, set the Material to a particle material that
 uses a snowflake texture. Ensure the snowflake texture is set to have a
 transparent background.
-
 4. Tweak Additional Settings:
 • You can further enhance the effect by adjusting settings like Color Over
 Lifetime, Size Over Lifetime, and Rotation Over Lifetime to add variation to
 the snowflakes.
-
 5. Play the Scene:
 • Press the Play button in Unity to see your snowfall effect in action.
+
+#code:
+#Go to hirarchy window>click "+"> Effects> Particle System> Name it
+#go to inspector and select shape> select shape "Box"> scale X=10 & Z=10
+#in inspector go to "start speed" and type 0
+#in inspector below enable "velocity over lifetime> scale Y=-5"
+#in inspector> Emission> Rate over time = 100
+#in inspector> start size> use dropdown box add 2 slote and scale from 0.05 to 0.2
+#inspector> enable size ove lifetime> particle system curve> choose high to low
 
 
 
